@@ -1,0 +1,6 @@
+<h1><%= @title %></h1>
+
+<%= form_for @related_word, :url => { :action => "fetch" }, :html => {:class => "nifty_form"} do |f| %>
+    <%= f.text_field :title %>
+    <%= f.submit "Search" %>
+<% end %>
