@@ -10,14 +10,27 @@ class FetchKeyWordsController < ApplicationController
 
   def fetch
 
-    res = batch_socket(related_words_params)
+    res = []
+
+    res << batch_socket(related_words_params)
 
     res.each do |key_word|
 
       count = RelatedWord.all.count
 
       while count <= 100000 do
-        res << batch_socket(key_word)
+
+        arr = []
+
+        5.times do |i|
+          arr[i] = Thread.new {
+            sleep(rand(0)/10.0)
+            res << batch_socket(key_word)
+          }
+        end
+
+        arr.each {|t| t.join}
+
       end
 
     end
